@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/haodiwang/haodiwang/2021Fall/phd/codes/ezDPS-main/target/debug/build/typenum-647e370413d017a5/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/Users/haodiwang/haodiwang/2021Fall/phd/codes/ezDPS-main/target/debug/build/typenum-647e370413d017a5/out/op.rs

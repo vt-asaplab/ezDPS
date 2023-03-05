@@ -60,6 +60,8 @@ pub fn pca_gadget() -> (
     usize,
     Instance,
     VarsAssignment,
+    VarsAssignment,
+    VarsAssignment,
     InputsAssignment,
 ) {
     //set the parameters, k is the output dimentsion, m is the input dimension
@@ -78,7 +80,7 @@ pub fn pca_gadget() -> (
     let minus_one = (-Scalar::one()).to_bytes();
     let mut temp = Scalar::one();
     let mut alpha = Vec::new();
-    //定义alpha，alpha_0永远为1，其他值暂定为2, 3, 4, ..., 9
+    //
     alpha.push(Scalar::one().to_bytes());
     for i in 1..9 {
         temp = temp + Scalar::one();
@@ -88,10 +90,10 @@ pub fn pca_gadget() -> (
     //construct the constraints 0-169
     for i in 0..170 {
         for j in 0..9 {
-            A.push((i, 170 * (j+1) + i, alpha[j]));
+            A.push((i, 170 * j + i, alpha[j]));
         }
-        B.push((i, i, one));
-        B.push((i, 1700 + i, minus_one));
+        B.push((i, i + 1700, one));
+        B.push((i, i + 1530, minus_one));
         C.push((i, 1870 + i, one));
     }
     //constraint 170
@@ -105,49 +107,137 @@ pub fn pca_gadget() -> (
 
     //provide the satisfying assignments
     let inst = Instance::new(num_cons, num_vars, num_inputs, &A, &B, &C).unwrap();
-    let mut var = Vec::new();
-    //将X输入的fixpoint值输入
-    for i in 0..170 {
-        if X[i] < 0 {
-            var.push((-Scalar::from(-X[i] as u64)).to_bytes())
-        }
-        else {
-            var.push(Scalar::from(X[i] as u64).to_bytes())
-        }
-    }
+
+    let mut vars_para = vec![Scalar::zero().to_bytes(); 2049];
+
     //将PARA的fixpoint值输入
     for i in 0..9 {
         for j in 0..170 {
             if PARA[i][j] < 0 {
-                var.push((-Scalar::from(-PARA[i][j] as u64)).to_bytes());
+                vars_para[170 * i + j] = (-Scalar::from(-PARA[i][j] as u64)).to_bytes();
             }
-            else { var.push(Scalar::from(PARA[i][j] as u64).to_bytes()); }
+            else { vars_para[170 * i + j] = Scalar::from(PARA[i][j] as u64).to_bytes(); }
         }
     }
     //将X_CETER的fixpoint值输入
     for i in 0..170 {
         if X_CENTER[i] < 0 {
-            var.push((-Scalar::from(-X_CENTER[i] as u64)).to_bytes());
+            vars_para[ 1530 + i] = (-Scalar::from(-X_CENTER[i] as u64)).to_bytes();
         }
-        else { var.push(Scalar::from(X_CENTER[i] as u64).to_bytes()); }
+        else { vars_para[1530 + i] = Scalar::from(X_CENTER[i] as u64).to_bytes(); }
     }
+
+    let mut vars_input = vec![Scalar::zero().to_bytes(); 2049];
+
+    //将X输入的fixpoint值输入
+    for i in 0..170 {
+        if X[i] < 0 {
+            vars_input[i + 1700] = (-Scalar::from(-X[i] as u64)).to_bytes()
+        }
+        else {
+            vars_input[i + 1700] = Scalar::from(X[i] as u64).to_bytes()
+        }
+    }
+
 
     //将中间值的fixpoint值输入
     for i in 0..170 {
         if TEMP[i] < 0 {
-            var.push((-Scalar::from(-TEMP[i] as u64)).to_bytes());
+            vars_input[i + 1870] = (-Scalar::from(-TEMP[i] as u64)).to_bytes();
         }
-        else { var.push(Scalar::from(TEMP[i] as u64).to_bytes()); }
+        else { vars_input[i + 1870] = Scalar::from(TEMP[i] as u64).to_bytes(); }
     }
 
     for i in 0..9 {
         if OUT[i] < 0 {
-            var.push((-Scalar::from(- OUT[i] as u64)).to_bytes());
+            vars_input[i + 2040] = (-Scalar::from(- OUT[i] as u64)).to_bytes();
         }
-        else { var.push(Scalar::from(OUT[i] as u64).to_bytes()); }
+        else { vars_input[i + 2040] = Scalar::from(OUT[i] as u64).to_bytes(); }
     }
 
-    let assignment_vars = VarsAssignment::new(&var).unwrap();
+    let assignment_vars_para = VarsAssignment::new(&vars_para).unwrap();
+    let padded_vars_para = {
+        let num_padded_vars = inst.inst.get_num_vars();
+        let num_vars = assignment_vars_para.assignment.len();
+        let padded_vars = if num_padded_vars > num_vars {
+            assignment_vars_para.pad(num_padded_vars)
+        } else {
+            assignment_vars_para
+        };
+        padded_vars
+    };
+
+    let assignment_vars_input = VarsAssignment::new(&vars_input).unwrap();
+    let padded_vars_input = {
+        let num_padded_vars = inst.inst.get_num_vars();
+        let num_vars = assignment_vars_input.assignment.len();
+        let padded_vars = if num_padded_vars > num_vars {
+            assignment_vars_input.pad(num_padded_vars)
+        } else {
+            assignment_vars_input
+        };
+        padded_vars
+    };
+
+    ///create the complete variable assignments
+    let mut vars = vec![Scalar::zero().to_bytes(); 2049];
+
+    //将PARA的fixpoint值输入
+    for i in 0..9 {
+        for j in 0..170 {
+            if PARA[i][j] < 0 {
+                vars[170 * i + j] = (-Scalar::from(-PARA[i][j] as u64)).to_bytes();
+            }
+            else { vars[170 * i + j] = Scalar::from(PARA[i][j] as u64).to_bytes(); }
+        }
+    }
+    //将X_CETER的fixpoint值输入
+    for i in 0..170 {
+        if X_CENTER[i] < 0 {
+            vars[1530 + i] = (-Scalar::from(-X_CENTER[i] as u64)).to_bytes();
+        }
+        else { vars[1530 + i] = Scalar::from(X_CENTER[i] as u64).to_bytes(); }
+    }
+
+    //将X输入的fixpoint值输入
+    for i in 0..170 {
+        if X[i] < 0 {
+            vars[i + 1700] = (-Scalar::from(-X[i] as u64)).to_bytes()
+        }
+        else {
+            vars[i + 1700] = Scalar::from(X[i] as u64).to_bytes()
+        }
+    }
+
+
+    //将中间值的fixpoint值输入
+    for i in 0..170 {
+        if TEMP[i] < 0 {
+            vars[i + 1870] = (-Scalar::from(-TEMP[i] as u64)).to_bytes();
+        }
+        else { vars[i + 1870] = Scalar::from(TEMP[i] as u64).to_bytes(); }
+    }
+
+    for i in 0..9 {
+        if OUT[i] < 0 {
+            vars[i + 2040] = (-Scalar::from(- OUT[i] as u64)).to_bytes();
+        }
+        else { vars[i + 2040] = Scalar::from(OUT[i] as u64).to_bytes(); }
+    }
+
+    let assignment_vars = VarsAssignment::new(&vars).unwrap();
+    let padded_vars = {
+        let num_padded_vars = inst.inst.get_num_vars();
+        let num_vars = assignment_vars.assignment.len();
+        let padded_vars = if num_padded_vars > num_vars {
+            assignment_vars.pad(num_padded_vars)
+        } else {
+            assignment_vars.clone()
+        };
+        padded_vars
+    };
+
+
     // create an InputAssignment
     let mut inputs = vec![Scalar::zero().to_bytes(); num_inputs];
     let assignment_inputs = InputsAssignment::new(&inputs).unwrap();
@@ -161,7 +251,9 @@ pub fn pca_gadget() -> (
         num_inputs,
         num_non_zero_entries,
         inst,
-        assignment_vars,
+        padded_vars_para,
+        padded_vars_input,
+        padded_vars,
         assignment_inputs
         )
 

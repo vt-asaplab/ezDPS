@@ -111,3 +111,18 @@ In this documentation, we provide an instruction how to run our code as follows.
     Verification time:
     171
     ```
+    
+# Citing
+
+If the code is found useful, we would be appreciated if our paper can be cited with the following bibtex format
+
+```
+@article{wang2022ezdps,
+  title={ezDPS: An Efficient and Zero-Knowledge Machine Learning Inference Pipeline},
+  author={Wang, Haodi and Hoang, Thang},
+  journal={arXiv preprint arXiv:2212.05428},
+  year={2022}
+}
+```
+
+For any inquiries, bugs, and assistance on building and running the code, please contact me at whd@mail.bnu.edu.cn

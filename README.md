@@ -117,11 +117,13 @@ In this documentation, we provide an instruction how to run our code as follows.
 If the code is found useful, we would be appreciated if our paper can be cited with the following bibtex format
 
 ```
-@article{wang2022ezdps,
+@inproceedings{wang2023ezDPS,
   title={ezDPS: An Efficient and Zero-Knowledge Machine Learning Inference Pipeline},
-  author={Wang, Haodi and Hoang, Thang},
-  journal={arXiv preprint arXiv:2212.05428},
-  year={2022}
+  author={Haodi, Wang and Hoang, Thang},
+  booktitle={Proceedings on Privacy Enhancing Technologies},
+  issue={2},
+  pages={430--448},
+  year={2023}
 }
 ```
 

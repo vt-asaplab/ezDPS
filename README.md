@@ -39,14 +39,9 @@ In this documentation, we provide an instruction how to run our code as follows.
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         ```
     
-    -   use `rustup` to manage the version of rust toolchain
+    -   set rust==nightly as your default toolchain. The stable toolchain will not work with some dependencies.
         ```
-        rustup install nightly-2021-08-29  
-        ```
-    
-    -   set rust==1.56.0-nightly as your default toolchain
-        ```
-        rustup default nightly-2021-08-29-x86_64-apple-darwin
+        rustup default nightly && rustup update
         ```
 ### To Test the Accuracy with Cross-Validation (Table 4 in the paper):
     

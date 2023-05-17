@@ -93,6 +93,9 @@ In this documentation, we provide an instruction how to run our code as follows.
     ```
     cargo build
     ```
+    
+    If you see a bunch of errors due to the private modules in libspartan, you need to go to spartan libary and change such modules to public (by adding prefix `pub`). We will provide the updated library, where we make these changes soon.
+    
 2.  Run the example on ECG dataset 
     ```
     cargo run main.rs

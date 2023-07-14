@@ -21,8 +21,8 @@ import load_data
 
 
 # test_data = pd.read_csv("test.csv")
-
-X, Y = load_data.load_data(88)
+num_class = int(sys.argv[1])
+X, Y = load_data.load_data(num_class)
 x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
 x_train = np.array(x_train)

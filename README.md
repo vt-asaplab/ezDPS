@@ -55,9 +55,9 @@ In this documentation, we provide an instruction on how to run our code as follo
         cd KDD
         ```
     -   For British Birdsong dataset
-       ``` 
-       cd british-bird
-       ```
+          ``` 
+          cd british-bird
+           ```
 2.  Run the following command to obtain the result
     ```
     python train_appro.py {#class} 

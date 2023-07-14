@@ -14,6 +14,9 @@ pub mod svc_compute_b;
 mod svc_compute_d;
 mod dwt_baseline;
 mod commit_test;
+mod extend_dwt;
+mod compute_nl_outputs;
+mod nl;
 
 extern crate curve25519_dalek;
 extern crate libspartan;
@@ -55,7 +58,7 @@ fn main() {
         padded_vars_input,
         padded_vars,
         assignment_inputs,
-    ) = pca_gadget();
+    ) = extend_dwt::dwt_gadget();
 
     // produce public parameters
     let gens = SNARKGens::new(num_cons, num_vars, num_inputs, num_non_zero_entries);
@@ -113,14 +116,14 @@ fn main() {
         blind_vars,
     );
 
-    // /// output the size of the proof, and prover's time
-    // // println!("{:?}", proof);
-    // let path = "./data/proofsize/svc.txt";
-    // let mut output = File::create(path).unwrap();
-    // writeln!(output, "{:?}", proof);
+    /// output the size of the proof, and prover's time
+    // println!("{:?}", proof);
+    let path = "./data/proof size/dwt.txt";
+    let mut output = File::create(path).unwrap();
+    writeln!(output, "{:?}", proof);
 
-    // println!("{:?}", SystemTime::now().duration_since(sy_time).unwrap().as_secs());
-    // let sy_time2 = SystemTime::now();
+    println!("{:?}", SystemTime::now().duration_since(sy_time).unwrap().as_secs());
+    let sy_time2 = SystemTime::now();
 
 
     // verify the proof of satisfiability
@@ -128,7 +131,7 @@ fn main() {
     assert!(my_lib_verify(proof, &comm, &assignment_inputs, &mut verifier_transcript, &gens, comm_vars_para, comm_vars_input)
         .is_ok());
     println!("proof verification successful!");
-    // println!("{:?}", SystemTime::now().duration_since(sy_time2).unwrap().as_millis());
+    println!("{:?}", SystemTime::now().duration_since(sy_time2).unwrap().as_millis());
 
 }
 

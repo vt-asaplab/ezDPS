@@ -9,11 +9,13 @@ edition = "2018"
 [dependencies]
 spartan = "0.3.0"
 merlin = "3.0.0"
+#spartan = {path= "C:\Users\Haodi\.cargo\registry\src\github.com-1ecc6299db9ec823\spartan-0.3.0\src\lib.rs"}
 curve25519-dalek = {version = "3.0.0", features = ["serde", "simd_backend"]}
 rand = "0.7.3"
 sys-info = "0.9"
-bincode ="1.2.1"
 
+[dependencies.bincode]
+version = "1.2.1"
 
 [patch.crates-io]
-spartan = { path = "/add-your-path-to-spartan-library-here (e.g., home/username/.cargo/registry/src/index.crates.io-6f17d22bba15001f/spartan-0.3.0" }
+spartan = { path = "C:/Users/Haodi/.cargo/registry/src/github.com-1ecc6299db9ec823/spartan-0.3.0" }

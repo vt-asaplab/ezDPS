@@ -13,7 +13,7 @@ pub fn load_data_i64(path: &str) -> Vec<i64> {
             continue;
         }
         else {
-            let temp = str.parse::<i64>().unwrap();
+            let temp = str.trim().parse::<i64>().unwrap();
             result_vec.push(temp);
         }
     }
@@ -32,7 +32,8 @@ pub fn load_data_cd(path: &str) -> Vec<i64> {
             continue;
         }
         else {
-            let temp = str.parse::<i64>().unwrap();
+            let temp = str.trim().parse::<i64>().unwrap();
+            // println!("{:?}", temp);
             result_vec.push(temp);
         }
     }
@@ -51,7 +52,7 @@ pub fn load_data_i128(path: &str) -> Vec<i128> {
             continue;
         }
         else {
-            let temp = str.parse::<i128>().unwrap();
+            let temp = str.trim().parse::<i128>().unwrap();
             result_vec.push(temp);
         }
     }

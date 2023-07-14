@@ -11,7 +11,9 @@ pub fn dwt_gadget() -> (
     usize,
     Instance,
     VarsAssignment,
-    InputsAssignment
+    // VarsAssignment,
+    // VarsAssignment,
+    InputsAssignment,
 ) {
     //set the parameters
     let num_cons = 11645;

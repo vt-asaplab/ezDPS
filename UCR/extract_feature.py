@@ -44,6 +44,8 @@ def wavelets_f(x_total, threshold=0.2):
     featuredata = np.zeros([len(x_total), len(x_total[0])])
     for i in range(len(x_total)):
         coeffs = my_wave2dec(x_total[i])
+        if i ==0:
+            np.savetxt("./data/dwt/dwt_y.txt", coeffs, fmt="%f")
         # print('len(coeffs): ', len(coeffs))
         coeffs = my_threshold(coeffs, 0.2)
         # 将信号进行小波重构

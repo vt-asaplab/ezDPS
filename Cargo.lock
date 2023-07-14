@@ -387,8 +387,6 @@ dependencies = [
 [[package]]
 name = "spartan"
 version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "29d133fcf8f909e577a02dd3e95e4b5908860fe2773fa07d524bd161d29c151c"
 dependencies = [
  "bincode",
  "byteorder",
@@ -411,6 +409,7 @@ dependencies = [
 name = "spartan_ecg"
 version = "0.1.0"
 dependencies = [
+ "bincode",
  "curve25519-dalek",
  "merlin",
  "rand",

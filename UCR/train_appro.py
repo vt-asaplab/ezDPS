@@ -18,7 +18,7 @@ from sklearn.preprocessing import normalize, scale
 
 
 
-num_class = 4
+num_class = int(sys.argv[1])
 train_data, train_label, test_data, test_label = load_data.load_data(num_class)
 train_data = np.array(train_data)
 train_label = np.array(train_label)

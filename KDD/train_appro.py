@@ -17,8 +17,8 @@ from load_data import load_data
 from sklearn.preprocessing import scale
 
 # Reading features list
-
-X, y = load_data(88)
+num_class = int(sys.argv[1])
+X, y = load_data(num_class)
 
 # Split dataset between training and testing set (80/20 split)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)

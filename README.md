@@ -1,12 +1,12 @@
-# Implementation of "ezDPS: An Efficient and Zero-Knowledge Machine Learning Inference Pipeline" 
+# Implementation of "An Efficient and Zero-Knowledge Classical Machine Learning Inference Pipeline" 
 
-In this documentation, we provide an instruction how to run our code as follows.
+In this documentation, we provide an instruction on how to run our code as follows.
 
-### First, install all the neccessary software and libraries
+### First, install all the necessary software and libraries
 
 1.  Anaconda
 
-    Download and install anaconda from www.anaconda.com. Set it to the environment path.
+    Download and install Anaconda from www.anaconda.com. Set it to the environment path.
 
 2.  Python v3.6
     -   Create the python virtual environment
@@ -50,41 +50,19 @@ In this documentation, we provide an instruction how to run our code as follows.
         ```
         cd UCR
         ```
-    -   For LFW dataset 
+    -   For KDD-1999 dataset 
         ```
-        cd LFW
+        cd KDD
         ```
-    -   For Cifar-100 dataset
-        -    Since github only permits 100 MB maximum file size, we had to store our test samples on Google Drive. So, please download them from (https://drive.google.com/drive/folders/1vj81b2qCxCfQ1k6tmX8ImcB7YAXkA5s6?usp=sharing) 
-        -   Copy the downloaded files (meta, test, train) to our CIFAR folder
-            ```
-            cp meta test train CIFAR/cifar-100-python/
-            ```
-        -   Then go to CIFAR folder 
-            ``` 
-            cd CIFAR
-            ```
+    -   For British Birdsong dataset
+       ``` 
+       cd british-bird
+       ```
 2.  Run the following command to obtain the result
-    -   For decision tree
-        ```
-        python train_dt.py {#class} 
-        ```
-        where {#class} is the number of classes. For UCR-ECG, replace {#class} with {8, 16, 32, or 42}. For Cifar-100, replace with {8, 16, 32, 64, 100}. For LFW, replace with {8, 16, 32, 64, 128}.
-        
-    -   For DWT+PCA+DT
-        ```
-        python train_dwt_pca_dt.py {#class} 
-        ```
-        
-    -   For SVM only
-        ```
-        python train_svm.py {#class} 
-        ```
-        
-    -   For DWT+PCA+SVM (ours)
-        ```
-        python train_dwt_pca_svm.py {#class} 
-        ```
+    ```
+    python train_appro.py {#class} 
+    ```
+    where {#class} is the number of classes. For UCR-ECG, replace {#class} with {8, 16, 32, or 42}. For KDD-1999, replace with {4, 8, 16, 23}. For British Birdsong, replace with {8, 16, 32, 64, 88}.
 
 ### To Test the Proving and Verification Time of Our Scheme 
 
@@ -109,20 +87,3 @@ In this documentation, we provide an instruction how to run our code as follows.
     Verification time:
     171
     ```
-    
-# Citing
-
-If the code is found useful, we would be appreciated if our paper can be cited with the following bibtex format
-
-```
-@inproceedings{wang2023ezDPS,
-  title={ezDPS: An Efficient and Zero-Knowledge Machine Learning Inference Pipeline},
-  author={Haodi, Wang and Hoang, Thang},
-  booktitle={Proceedings on Privacy Enhancing Technologies},
-  issue={2},
-  pages={430--448},
-  year={2023}
-}
-```
-
-For any inquiries, bugs, and assistance on building and running the code, please contact me at whd@mail.bnu.edu.cn
